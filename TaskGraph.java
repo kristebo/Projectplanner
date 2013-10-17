@@ -10,10 +10,15 @@ import java.util.HashMap;
 public class TaskGraph{
 	private ArrayList<Task> taskList, visited;
 	private HashMap<Integer, Task> viewGraph; 
+	ArrayList<Task> zeros=new ArrayList<>();
 
 	private Task head; //root of graph
-	int u=Integer.MAX_VALUE;Task firstTask; //evaluating helpers
-
+	int u=Integer.MAX_VALUE;//why the ...
+	Task firstTask; //evaluating helpers
+	/**
+	 * Constrøctor
+	 * @param taskList
+	 */
 	public TaskGraph(ArrayList<Task> taskList) {
 		viewGraph=new HashMap<>();
 		this.taskList=taskList;
@@ -22,16 +27,20 @@ public class TaskGraph{
 		//find all that has head as predecessor.
 		makeDependencies(taskList);
 	}
-
+	/**
+	 * 
+	 * 
+	 * @param taskList
+	 */
 	private void makeDependencies(ArrayList<Task> taskList) {
 		// find first Task and set it
 
 		//add into this graph holding map, could have used a bag or some heap structure.
 		// this is set in the graph id start at 1 index at 0.
-
+		
 		for (Task t: taskList){
 			if (t.getPredecessors()==null) {
-				head=t;
+				zeros.add(t);
 			}
 		}
 
@@ -71,7 +80,7 @@ public class TaskGraph{
 			try {
 				if (!cycleChecker(head)){
 					System.out.println("No cycle detected\n Starting evaluation of nodes in Graph ");
-					evaluateNodes();
+					
 				}
 			} catch (CyclicGraphException e) {
 				System.err.println(e.getMessage());
@@ -81,6 +90,7 @@ public class TaskGraph{
 		for(Task task:current.outEdge){
 			makeDependencies(task, notEvalTaskList);
 		}
+		if (notEvalTaskList.isEmpty())	evaluateNodes();
 
 
 	}
@@ -119,7 +129,7 @@ public class TaskGraph{
 	 * @param time
 	 */
 	public void evaluateNodes(Task current, int time){
-		setTimes(head);
+
 		System.out.println("This Project contains: " + FileReader.numberofTasks + " tasks\nThese are: ");
 		for (Task t: viewGraph.values()){
 			System.out.println(t.getId()+ " : " +t.getName());
@@ -130,16 +140,36 @@ public class TaskGraph{
 				System.out.println(deps.getName() + " is dependent on " + t.getName());
 			}
 		}
+		setEarliestStart(head);
 	}
 	/**
 	 * recursively setting latest/earliest starting time of each Task to be evaluated. 
-	 * It is the lateste time tha t will define when the next dependent task is going to be evaluated.
-	 * task1.lateststarttime+task1.time=next.starttime ... and so on.
-	 * @param current
+	 * It is the latest time that will define when the next dependent task is going to be start.
+	 * Setting Earliest Start
+	 * 
+	 * @param current task
 	 */
-	public void setTimes(Task current){
+	int time=0;
+	public void setEarliestStart(Task current){
+		
+		
 
+		
 	}
+	
+	private void setLatestStart(ArrayList<Task> outEdge) {
+		
+		for (Task t: outEdge){
+			
+			t.setEarliestStart(t.getTime());
+			
+			System.out.println("t" + t.getEarliestStart() +  " : " +t.getName());
+			
+		}
+		
+		
+	}
+
 	/**
 	 * Gets the slack of the 
 	 * @param current 
@@ -147,11 +177,11 @@ public class TaskGraph{
 	 * @param prev
 	 * 				previous task.
 	 * @return int
-	 * 			the slack is s earliest start - sum of latest start
+	 * 			the slack is  earliestStart-latestStart
 	 */
 	public int slack(Task current, Task prev){
 		return 0;
-		
+
 	}
 }
 
