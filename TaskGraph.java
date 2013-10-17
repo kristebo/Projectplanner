@@ -29,6 +29,8 @@ public class TaskGraph{
 		//add into this graph holding map, could have used a bag or some heap structure.
 		// this is set in the graph id start at 1 index at 0.
 
+		//Xianghe: hva om det er mer enn en task uten predecessor? 
+		//Her ser det ut som du antar at det bare finnes én.
 		for (Task t: taskList){
 			if (t.getPredecessors()==null) {
 				head=t;
@@ -53,6 +55,9 @@ public class TaskGraph{
 		}
 
 		for (Task t: notEvalTaskList){
+			
+			//Xianghe: Hvis det er flere noder uten predecessor,
+			//så kan du få nullpointer exception.
 			if (t.getPredecessors().contains(current.getId())){
 
 				current.outEdge.add(t);
@@ -65,6 +70,8 @@ public class TaskGraph{
 		notEvalTaskList.remove(current);
 
 		//for (Task m: current.outEdge) System.out.println(m.getName()); //debug
+		
+		//Xianghe: Vil notEvalTaskList noen sinne bli tom hvis man har flere noder som kunne vært "head"?
 		if (notEvalTaskList.isEmpty()){
 			System.out.println("Going to find cycles");
 
@@ -78,6 +85,9 @@ public class TaskGraph{
 				System.exit(1); //error
 			}
 		} 
+		
+		//Xianghe: Siden du bare går videre fra current så vil du ikke konstruere hele grafen
+		//hvis grafen har flere "heads". 
 		for(Task task:current.outEdge){
 			makeDependencies(task, notEvalTaskList);
 		}
