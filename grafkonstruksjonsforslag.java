@@ -24,7 +24,7 @@ public class TaskGraph{
 		for (Task t: taskList){
 			if (!t.getPredecessors()==null) {
 				for (int i: t.getPredecessors()){ // antar at t.getPred...() gir en ArrayList<Integer>
-					taskList.get(i-0).outEdge.add(t)); // sett nåværende task som barn hos hver predecessor.
+					taskList.get(i-1).outEdge.add(t)); // sett nåværende task som barn hos hver predecessor.
 				}
 			}
 			// her kan du evt. lage deg en "else, samle på alle heads" til du skal sjekke for sykler.
