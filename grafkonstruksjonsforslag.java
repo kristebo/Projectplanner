@@ -29,7 +29,6 @@ public class TaskGraph{
 			}
 			// her kan du evt. lage deg en "else, samle på alle heads" til du skal sjekke for sykler.
 		}
-
 	}
 	// graf ferdig! 
 	
